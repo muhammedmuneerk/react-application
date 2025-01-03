@@ -33,6 +33,21 @@ export const messages = [
       { text: 'Main Channel', url: 'https://t.me/+zkAClkI3Nes3YTdl' }
     ]
   },
+  {
+    id: 4,
+    sender: 'BUBU Study',
+    content: '💁🏻‍♂️ Join',
+    timestamp: '01:44',
+    type: 'video',
+    media: {
+      url: '/video_files/video_10@02-01-2025_01-44-40.mp4',
+      thumbnail: '/video_files/video_10@02-01-2025_01-44-40.mp4_thumb.jpg',
+      duration: '00:26'
+    },
+    buttons: [
+      { text: 'Main Channel', url: 'https://t.me/+zkAClkI3Nes3YTdl' }
+    ]
+  },
   // Add more messages with videos and photos
 ]
 
