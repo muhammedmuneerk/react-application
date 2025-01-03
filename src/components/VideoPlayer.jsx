@@ -73,69 +73,74 @@ export default function VideoPlayer({ src, onClose }) {
   }
 
   return (
-    <div ref={containerRef} className="bg-gray-900 rounded-lg shadow-lg w-full max-w-4xl mx-auto overflow-hidden">
-      <div className="relative aspect-video">
-        <video
-          ref={videoRef}
-          src={src}
-          className="w-full h-full object-contain"
-          onClick={togglePlay}
-        />
-        <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center bg-gradient-to-b from-black/50 to-transparent">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20"
-            onClick={onClose}
-          >
-            <X />
+    <div
+  ref={containerRef}
+  className={`bg-gray-900 rounded-lg shadow-lg w-full max-w-4xl mx-auto overflow-hidden ${
+    isFullscreen ? 'fixed inset-0 z-50 flex items-center justify-center' : ''
+  }`}
+>
+  <div className={`relative ${isFullscreen ? 'w-full h-full' : 'aspect-video'}`}>
+    <video
+      ref={videoRef}
+      src={src}
+      className={`w-full h-full object-contain ${isFullscreen ? '' : ''}`}
+      onClick={togglePlay}
+    />
+    <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center bg-gradient-to-b from-black/50 to-transparent">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-white hover:bg-white/20"
+        onClick={onClose}
+      >
+        <X />
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-white hover:bg-white/20"
+        onClick={toggleFullscreen}
+      >
+        {isFullscreen ? <Minimize /> : <Maximize />}
+      </Button>
+    </div>
+    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
+      <Slider
+        value={[currentTime]}
+        max={duration}
+        step={1}
+        onValueChange={([value]) => handleTimeChange(value)}
+        className="mb-4"
+      />
+      <div className="flex justify-between items-center">
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" onClick={togglePlay}>
+            {isPlaying ? <Pause /> : <Play />}
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20"
-            onClick={toggleFullscreen}
-          >
-            {isFullscreen ? <Minimize /> : <Maximize />}
-          </Button>
+          <span className="text-sm text-white">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </span>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/20"
+            onClick={() => handleVolumeChange(volume === 0 ? 1 : 0)}
+          >
+            {volume === 0 ? <VolumeX /> : <Volume2 />}
+          </Button>
           <Slider
-            value={[currentTime]}
-            max={duration}
-            step={1}
-            onValueChange={([value]) => handleTimeChange(value)}
-            className="mb-4"
+            value={[volume]}
+            max={1}
+            step={0.1}
+            className="w-24"
+            onValueChange={([value]) => handleVolumeChange(value)}
           />
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" onClick={togglePlay}>
-                {isPlaying ? <Pause /> : <Play />}
-              </Button>
-              <span className="text-sm text-white">
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-white/20"
-                onClick={() => handleVolumeChange(volume === 0 ? 1 : 0)}
-              >
-                {volume === 0 ? <VolumeX /> : <Volume2 />}
-              </Button>
-              <Slider
-                value={[volume]}
-                max={1}
-                step={0.1}
-                className="w-24"
-                onValueChange={([value]) => handleVolumeChange(value)}
-              />
-            </div>
-          </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
   )
 }
